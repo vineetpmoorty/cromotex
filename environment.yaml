@@ -1,0 +1,11 @@
+name: /home/vineet/projects/cromotex_pvt/venv
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - ipykernel
+  - tqdm
+  - pandas
+  - imageio
+  - matplotlib
+  - h5py

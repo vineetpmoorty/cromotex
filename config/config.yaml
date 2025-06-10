@@ -1,0 +1,120 @@
+defaults:
+  - cromotex: cromotex_patch_transformer
+
+pathology: 'cardiomegaly' 
+
+finetune:
+  seed: 42
+  mlflow_expt_name: 'cromotex_finetune'
+  mlflow_run_notes: 'notes for mlflow'
+  gpu_id: 0
+  ckpt_filename: '' # 'filename.pth' or '' for from-scratch
+  num_epochs: 50
+  batch_size: 256
+  save_ckpt: True
+  early_stop: True
+  data_parallel: False
+  num_dataloader_workers: 4
+  loss: 'bce' # bce only 
+  freeze_backbone: False
+  focal_gamma: 2.0
+  focal_alpha: 0.25
+  focal_pos_weight: 4.0
+
+  optim:
+    grad_clip: 2.5
+    lr_peak: 1e-5 #1e-5
+    warmup_epochs: 10
+    decay_epochs: 100
+    weight_decay: 1e-5
+    grad_accum_steps: 1 #1 for no accumulation
+
+cromotex_train:
+  seed: 42
+  mlflow_expt_name: 'cromotex_train'
+  mlflow_run_notes: 'mlflow notes'
+  gpu_id: 0
+  data_parallel: False
+  resume_from_last_ckpt: False
+  save_ckpt: True
+  early_stop: True
+  temperature: 0.01
+  
+  lambda_cross_contrast: 1.0
+  lambda_uni_contrast: 0.0
+  lambda_classif: 0.0
+
+  hard_neg_weights: 'topk' # 'linear' or 'topk' or 'exp' or 'none' 
+  hard_neg_topk_fraction: 0.1 #fraction of batch size with increased weight
+  hard_neg_alpha: 5.0
+
+  num_dataloader_workers: 4
+  num_epochs: 50
+  batch_size: 256
+
+  optim:
+    grad_clip: 2.5
+    lr_peak: 1e-4
+    warmup_epochs: 10
+    decay_epochs: 100
+    weight_decay: 1e-5
+    grad_accum_steps: 1 #1 for no accumulation
+
+pretrain_ecg:
+  mlflow_expt_name: 'pretrain_ecg'
+  mlflow_run_notes: 'resnet'
+  gpu_id: 2
+  optim:
+    grad_accum_steps: 1 #1 for no accumulation
+    lr_peak: 4e-6
+    weight_decay: 1e-5
+    warmup_epochs: 5
+    decay_epochs: 50
+    grad_clip: 2.0
+    backbone_lr_scaler: 0.5 #lr_backbone/lr_classif
+  augment:
+    angle: 0 #degrees
+    scale_low: 1.0
+    scale_high: 1.0
+    translate: 0.0
+  
+  temperature: 0.01
+
+  weighted_sampling: False
+  use_pretrained: True
+  num_epochs: 100
+  num_dataloader_workers: 4
+  dropout: 0.0
+  batch_size: 512
+  resume_from_last_ckpt: False
+  save_ckpt: True
+  early_stop: True
+  early_stop_patience_epochs: 4
+
+pretrain_img:
+  mlflow_expt_name: 'pretrain_img_effusion'
+  mlflow_run_notes: 'mlflow notes'
+  gpu_id: 0
+  optim:
+    grad_accum_steps: 1 #1 for no accumulation
+    lr_peak: 1e-4
+    weight_decay: 1e-5
+    warmup_epochs: 10
+    decay_epochs: 100
+    grad_clip: 2.0
+    backbone_lr_scaler: 0.5 #lr_backbone/lr_classif
+  augment:
+    angle: 0 #degrees
+    scale_low: 1.0
+    scale_high: 1.0
+    translate: 0.0
+  weighted_sampling: False
+  use_pretrained: True
+  num_epochs: 50
+  num_dataloader_workers: 4
+  dropout: 0.0
+  batch_size: 64
+  resume_from_last_ckpt: False
+  save_ckpt: True
+  early_stop: True
+  early_stop_patience_epochs: 4

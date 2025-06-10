@@ -1,0 +1,39 @@
+name: 'cromotex_patch_transformer'
+img_model: 'densenet121_xrv'
+
+#PatchTransformer model params
+kernel_size: 5
+stride1: 5
+stride2: 1
+intermediate_dim: 128
+embed_dim: 256
+num_heads: 8
+num_layers: 4
+patch_drop: 0.0
+
+ecg_augments: 'vcg_ecg_augments' #'basic_augments' or 'vcg_ecg_augments'
+
+#vcg augments
+vcg_aug_angle: 45 #degrees
+vcg_aug_scale: 1.5
+ecg_aug_mask_ratio: 0.25
+
+proj_dim: 256
+
+classif_head_hid_dim: 256
+classif_head_num_layers: 4
+classif_head_dropout: 0.1
+
+#lr scalers
+proj_linear_lr_scaler: 0.1
+
+#loss function weight
+learnable_loss_weights: False
+lambda_regularize_weights: 0.0
+learnable_weights_lr_scaler: 1000
+
+direct_positive_pair_weight: 3.0 # weight for direct positive pairs
+
+#img_encodr lr scaler
+img_encoder_freeze: True
+img_encoder_lr_scaler: 0.01
