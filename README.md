@@ -5,6 +5,7 @@
 Refer `data_download_steps.md`
 
 ## Environment set up
+1. `git clone` this repo
 1. `conda create --prefix ./venv python=3.12`
 1. `conda activate ./venv`
 1. `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
